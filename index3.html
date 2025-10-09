@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- ✅ Full màn hình thật trên điện thoại -->
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Galaxy with Zoom Effect</title>
+
+    <!-- 🔹 CSS chính -->
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        /* 🔸 Ẩn player, nút nhạc nổi */
+        #player {
+            display: none;
+        }
+
+        #musicButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: #ffffff10;
+            color: white;
+            border: 1px solid white;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 9999;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+        }
+
+            #musicButton:hover {
+                background-color: #ffffff30;
+            }
+
+        /* ✅ Bắt buộc để full màn hình thật */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: black;
+            touch-action: none;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+
+    <!-- Importmap -->
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
+            "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.152.2/examples/jsm/controls/OrbitControls.js",
+            "three/examples/jsm/loaders/FontLoader.js": "https://unpkg.com/three@0.152.2/examples/jsm/loaders/FontLoader.js",
+            "three/examples/jsm/geometries/TextGeometry.js": "https://unpkg.com/three@0.152.2/examples/jsm/geometries/TextGeometry.js"
+          }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <div id="landscape-warning">
+        <div class="warning-content">
+            <div class="rotate-icon"></div>
+            <h1>Stellar Bloom</h1>
+            <h1>Tinh Cầu</h1>
+            <div class="stars-bg"></div>
+        </div>
+    </div>
+
+    <div id="dark-overlay"></div>
+    <div id="info"></div>
+
+    <button id="musicButton" disabled>A Thousand Years🎵</button>
+    <div id="player"></div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+        const startTime = 227;
+        const endTime = 261;
+        window.onYouTubeIframeAPIReady = function () {
+            player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: 'd4OMqGKBl6E',
+                playerVars: {
+                    autoplay: 0,
+                    start: startTime,
+                    end: endTime,
+                    controls: 0,
+                    loop: 1,
+                    playlist: 'd4OMqGKBl6E'
+                },
+                events: {
+                    onReady: () => {
+                        const btn = document.getElementById('musicButton');
+                        btn.disabled = false;
+                        btn.innerText = "A Thousand Years 🎵";
+                    },
+                    onStateChange: (event) => {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            player.seekTo(90);
+                        }
+                    }
+                }
+            });
+        };
+
+        document.getElementById('musicButton').addEventListener('click', () => {
+            if (player) {
+                player.playVideo();
+                document.getElementById('musicButton').style.display = 'none';
+            }
+        });
+    </script>
+
+    <script>
+        const body = document.body;
+
+        function checkOrientation() {
+            if (window.innerWidth > window.innerHeight) {
+                body.classList.remove('landscape-warning-active');
+            } else {
+                body.classList.add('landscape-warning-active');
+            }
+        }
+
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('orientationchange', checkOrientation);
+        checkOrientation();
+    </script>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

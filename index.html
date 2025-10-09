@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nhập Pass Đi Người Đẹp 💞</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffe6f2, #ffc1dc);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: #fff;
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            width: 90%;
+            max-width: 900px;
+            border: 3px solid #ffd6e8;
+        }
+
+        h2 {
+            width: 100%;
+            text-align: center;
+            margin: 0 0 -20px 0;
+            font-size: 30px;
+            color: #333;
+            text-shadow: 1px 1px 2px #ffcce0;
+        }
+
+        .avatar {
+            width: 260px;
+            height: 260px;
+            border-radius: 25px;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(255,100,150,0.3);
+            margin-top: 10px;
+        }
+
+        .right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-display {
+            width: 220px;
+            height: 55px;
+            border: 2px solid #ffcce0;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 28px;
+            letter-spacing: 8px;
+            background: rgba(255, 245, 250, 0.8);
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(255, 182, 193, 0.2);
+            transition: all 0.25s ease;
+            color: #ff4c94;
+            font-weight: 600;
+        }
+
+            .password-display.active {
+                box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
+                transform: scale(1.05);
+                background: rgba(255, 245, 250, 0.95);
+            }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 90px);
+            gap: 18px;
+            justify-content: center;
+        }
+
+        .key {
+            background: #fff;
+            border: none;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            font-size: 32px;
+            height: 80px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .key:hover, .key:active {
+                background: #ffe6f2;
+                transform: scale(1.08);
+            }
+
+            .key.ok {
+                background: #f584b7;
+                color: white;
+            }
+
+            .key.del {
+                background: #999;
+                color: white;
+            }
+
+        .error {
+            color: red;
+            margin-top: 15px;
+            height: 22px;
+            font-size: 16px;
+        }
+
+        /* Hiển thị đẹp trên điện thoại */
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 40px 20px;
+            }
+
+            .avatar {
+                width: 200px;
+                height: 200px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .key {
+                width: 80px;
+                height: 70px;
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>NHẬP PASS ĐI NGƯỜI ĐẸP 💖</h2>
+        <img src="images.jpeg" alt="avatar" class="avatar">
+        <div class="right">
+            <input type="password" id="password" class="password-display" disabled>
+            <div class="keypad">
+                <button class="key">1</button>
+                <button class="key">2</button>
+                <button class="key">3</button>
+                <button class="key">4</button>
+                <button class="key">5</button>
+                <button class="key">6</button>
+                <button class="key">7</button>
+                <button class="key">8</button>
+                <button class="key">9</button>
+                <button class="key ok">✔</button>
+                <button class="key">0</button>
+                <button class="key del">✖</button>
+            </div>
+            <div class="error" id="errorMsg"></div>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('password');
+        const buttons = document.querySelectorAll('.key');
+        const errorMsg = document.getElementById('errorMsg');
+        const correctPass = "2210"; // mật khẩu đúng
+        let input = "";
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const val = btn.textContent.trim();
+
+                if (!isNaN(val)) {
+                    if (input.length < 4) input += val;
+                }
+                else if (btn.classList.contains('ok')) {
+                    if (input === correctPass) {
+                        window.location.href = "index2.html";
+                    } else {
+                        errorMsg.textContent = "Sai pass mất rồi 😅";
+                        input = "";
+                    }
+                }
+                else if (btn.classList.contains('del')) {
+                    input = input.slice(0, -1);
+                }
+
+                display.value = "•".repeat(input.length);
+                display.classList.toggle('active', input.length > 0);
+            });
+        });
+
+        // đảm bảo full màn hình trên điện thoại
+        window.addEventListener('resize', () => {
+            document.body.style.height = `${window.innerHeight}px`;
+        });
+    </script>
+</body>
+</html>

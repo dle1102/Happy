@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Website rainlove - nơi chia sẻ tình yêu thương.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>HAPPY BIRTHDAY</title>
+    <link rel="icon" href="https://github.com/Panbap/anh/blob/main/icon1.png?raw=true" type="image/png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            touch-action: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            display: block;
+        }
+
+        #sticker {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            height: auto;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #pinkboard {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9;
+            pointer-events: none;
+        }
+
+        #nextPage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.3);
+            padding: 16px 32px;
+            background: #f584b7;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 20;
+            transition: 0.5s;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 0 20px rgba(255, 150, 200, 0.6);
+        }
+
+            #nextPage.show {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translate(-50%, -50%) scale(1.4);
+            }
+
+        audio {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            #sticker {
+                width: 300px;
+            }
+
+            #nextPage {
+                font-size: 18px;
+                padding: 14px 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="rainCanvas"></canvas>
+    <canvas id="canvas"></canvas>
+    <img id="sticker" src="" alt="Sticker" />
+    <audio id="bgm" loop></audio>
+    <canvas id="pinkboard"></canvas>
+
+    <script src="./assets/rainlove.js"></script>
+    <script>
+        const canva = document.getElementById('rainCanvas');
+        const ctxs = canva.getContext('2d');
+
+        const letters = 'HAPPY BIRTHDAY'.split('');
+        const fontSize = 16;
+        let columns = Math.floor(window.innerWidth / fontSize);
+        const drops = Array(columns).fill(1);
+
+        function resizeCanvas() {
+            canva.width = window.innerWidth;
+            canva.height = window.innerHeight;
+            columns = Math.floor(canva.width / fontSize);
+            drops.length = columns;
+            drops.fill(1);
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', resizeCanvas);
+
+        function drawRainBackground() {
+            ctxs.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctxs.fillRect(0, 0, canva.width, canva.height);
+            ctxs.fillStyle = '#f584b7';
+            ctxs.font = fontSize + 'px arial';
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctxs.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canva.height || Math.random() > 0.95) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawRainBackground, 50);
+    </script>
+
+    <button id="nextPage">Nhấn Tiếp Đi💌</button>
+
+    <script>
+        setTimeout(() => {
+            document.getElementById('nextPage').classList.add('show');
+        }, 10000);
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            window.location.href = "index3.html";
+        });
+    </script>
+</body>
+
+</html>
