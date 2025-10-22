@@ -26,7 +26,7 @@ function base64DecodeUnicode(str) {
 
 // === Đọc dữ liệu từ URL (dạng base64) ===
 const urlParams = new URLSearchParams(window.location.search);
-let inputText = "Chúc mừng|sinh nhật|bạn❤|";
+let inputText = "Chúc mừng|sinh nhật|bạn 🎂|";
 let gif = "";
 let music = "";
 
